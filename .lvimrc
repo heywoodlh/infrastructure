@@ -1,0 +1,2 @@
+let g:ale_terraform_terraform_executable="tofu"
+let g:ale_terraform_fmt_executable="tofu"
