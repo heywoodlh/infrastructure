@@ -1,5 +1,12 @@
+resource "proxmox_virtual_environment_download_file" "talos_img" {
+  content_type = "iso"
+  datastore_id = "local"
+  node_name    = "proxmox-nvidia"
+  file_name = "talos-metal-amd64.iso"
+  url = "https://factory.talos.dev/image/077514df2c1b6436460bc60faabc976687b16193b8a1290fda4366c69024fec2/v1.7.1/metal-amd64.iso"
+}
+
 resource "proxmox_virtual_environment_vm" "talos_linux_template" {
-  depends_on  = [null_resource.download_talos]
   name        = "talos-linux-template"
   description = "Managed by Terraform"
   tags        = ["terraform", "kubernetes"]
@@ -13,9 +20,15 @@ resource "proxmox_virtual_environment_vm" "talos_linux_template" {
 
   bios = "ovmf"
 
+  efi_disk {
+    datastore_id = "local-lvm"
+    type         = "4m"
+    file_format  = "raw"
+  }
+
   disk {
     datastore_id = "local"
-    file_id      = "local:iso/talos-nocloud-amd64.iso"
+    file_id      = proxmox_virtual_environment_download_file.talos_img.id
     interface    = "scsi0"
   }
 
@@ -30,8 +43,6 @@ resource "proxmox_virtual_environment_vm" "talos_linux_template" {
       keys     = [trimspace(data.http.vm_pubkey.response_body)]
       username = "heywoodlh"
     }
-
-    user_data_file_id = proxmox_virtual_environment_file.cloud_config_kubernetes.id
   }
 
   network_device {
@@ -66,44 +77,9 @@ data "http" "vm_pubkey" {
   url = "https://github.com/heywoodlh.keys"
 }
 
-resource "null_resource" "download_talos" {
-  connection {
-    type = "ssh"
-    user = "heywoodlh"
-    host = "proxmox-nvidia"
-    agent = true
-    timeout = "10s"
-  }
-
-  provisioner "remote-exec" {
-    inline = [
-      "sudo curl -C - -Lq https://github.com/siderolabs/talos/releases/download/v1.7.1/nocloud-amd64.raw.xz -o /var/lib/vz/template/iso/talos-nocloud-amd64.raw.xz",
-      "sudo bash -c 'unxz /var/lib/vz/template/iso/talos-nocloud-amd64.raw.xz --stdout > /var/lib/vz/template/iso/talos-nocloud-amd64.iso'"
-    ]
-  }
-}
-
-# Ensure that snippets are enabled: `pvesm set local --content images,rootdir,vztmpl,iso,snippets`
-resource "proxmox_virtual_environment_file" "cloud_config_kubernetes" {
-  content_type = "snippets"
-  datastore_id = "local"
-  node_name = "proxmox-nvidia"
-  source_raw {
-    file_name = "kubernetes.yml"
-    data = <<EOF
-#cloud-config
-runcmd:
-  - |
-    echo "test" > /tmp/testing.txt
-  - |
-    echo "test2" >> /tmp/testing.txt
-EOF
-  }
-}
-
-resource "proxmox_virtual_environment_vm" "talos_0" {
+resource "proxmox_virtual_environment_vm" "talos_controller" {
   depends_on  = [proxmox_virtual_environment_vm.talos_linux_template]
-  name        = "talos-0"
+  name        = "talos-controller"
   description = "Managed by Terraform"
   tags        = ["terraform", "kubernetes"]
 
@@ -113,8 +89,8 @@ resource "proxmox_virtual_environment_vm" "talos_0" {
   disk {
     datastore_id = "local"
     interface    = "scsi0"
+    size         = 40
   }
-
 
   network_device {
     bridge = "vmbr0"
@@ -140,6 +116,7 @@ resource "proxmox_virtual_environment_vm" "talos_1" {
   disk {
     datastore_id = "local"
     interface    = "scsi0"
+    size         = 40
   }
 
   network_device {
@@ -165,6 +142,7 @@ resource "proxmox_virtual_environment_vm" "talos_2" {
   disk {
     datastore_id = "local"
     interface    = "scsi0"
+    size         = 40
   }
 
   network_device {
@@ -177,3 +155,30 @@ resource "proxmox_virtual_environment_vm" "talos_2" {
     vm_id        = 8001
   }
 }
+
+resource "proxmox_virtual_environment_vm" "talos_ceph" {
+  depends_on  = [proxmox_virtual_environment_vm.talos_linux_template]
+  name        = "talos-ceph"
+  description = "Managed by Terraform"
+  tags        = ["terraform", "kubernetes"]
+
+  node_name = "proxmox-nvidia"
+  vm_id     = "109"
+
+  disk {
+    datastore_id = "local"
+    interface    = "scsi0"
+    size         = 40
+  }
+
+  network_device {
+    bridge = "vmbr0"
+    mac_address = "BC:24:11:F0:C8:96"
+  }
+
+  clone {
+    datastore_id = "local"
+    vm_id        = 8001
+  }
+}
+

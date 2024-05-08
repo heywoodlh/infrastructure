@@ -12,7 +12,7 @@ tf apply
 
 ```
 cd vms
-tf init -var-file=./vars/k8s-nfs.tfvars
+tf init -var-file=./vars/k8s-ceph.tfvars
 ```
 
 After the VM is setup, run the following command:
