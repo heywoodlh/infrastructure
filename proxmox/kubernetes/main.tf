@@ -115,6 +115,12 @@ resource "proxmox_virtual_environment_vm" "talos_0" {
     interface    = "scsi0"
   }
 
+
+  network_device {
+    bridge = "vmbr0"
+    mac_address = "BC:24:11:F0:C8:93"
+  }
+
   clone {
     datastore_id = "local"
     vm_id        = 8001
@@ -136,6 +142,11 @@ resource "proxmox_virtual_environment_vm" "talos_1" {
     interface    = "scsi0"
   }
 
+  network_device {
+    bridge = "vmbr0"
+    mac_address = "BC:24:11:F0:C8:94"
+  }
+
   clone {
     datastore_id = "local"
     vm_id        = 8001
@@ -154,6 +165,11 @@ resource "proxmox_virtual_environment_vm" "talos_2" {
   disk {
     datastore_id = "local"
     interface    = "scsi0"
+  }
+
+  network_device {
+    bridge = "vmbr0"
+    mac_address = "BC:24:11:F0:C8:95"
   }
 
   clone {
