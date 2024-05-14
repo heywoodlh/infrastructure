@@ -15,7 +15,7 @@ resource "proxmox_virtual_environment_vm" "talos_linux_template" {
   vm_id     = 8001
 
   agent {
-    enabled = false
+    enabled = true
   }
 
   bios = "ovmf"
@@ -86,6 +86,10 @@ resource "proxmox_virtual_environment_vm" "talos_controller" {
   node_name = "proxmox-nvidia"
   vm_id     = "105"
 
+  agent {
+    enabled = true
+  }
+
   disk {
     datastore_id = "local"
     interface    = "scsi0"
@@ -113,6 +117,10 @@ resource "proxmox_virtual_environment_vm" "talos_1" {
   node_name = "proxmox-nvidia"
   vm_id     = "106"
 
+  agent {
+    enabled = true
+  }
+
   disk {
     datastore_id = "local"
     interface    = "scsi0"
@@ -139,6 +147,10 @@ resource "proxmox_virtual_environment_vm" "talos_2" {
   node_name = "proxmox-nvidia"
   vm_id     = "107"
 
+  agent {
+    enabled = true
+  }
+
   disk {
     datastore_id = "local"
     interface    = "scsi0"
@@ -164,6 +176,10 @@ resource "proxmox_virtual_environment_vm" "talos_ceph" {
 
   node_name = "proxmox-nvidia"
   vm_id     = "109"
+
+  agent {
+    enabled = true
+  }
 
   disk {
     datastore_id = "local"
