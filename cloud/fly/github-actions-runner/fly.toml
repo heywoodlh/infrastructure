@@ -1,0 +1,19 @@
+# fly.toml app configuration file generated for github-actions-runner-summer-sky-7034 on 2024-05-09T13:31:30-06:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'github-actions-runner-summer-sky-7034'
+primary_region = 'den'
+
+[build]
+  image = 'docker.io/heywoodlh/github-actions-runner:2.316.1'
+
+[env]
+  GH_OWNER = 'heywoodlh'
+  GH_REPO = 'actions'
+
+[[vm]]
+  memory = '1gb'
+  cpu_kind = 'shared'
+  cpus = 1
