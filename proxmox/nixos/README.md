@@ -1,6 +1,6 @@
-This directory contains Terraform configuration for general-purpose Ubuntu VMs.
+This directory contains Terraform configuration for general-purpose NixOS VMs.
 
-## Deploy Ubuntu template
+## Deploy NixOS template
 
 ```
 tf init
@@ -13,6 +13,7 @@ tf apply
 ```
 cd vms
 tf init -var-file=./vars/nixos-dev.tfvars
+tf apply -var-file=./vars/nixos-dev.tfvars
 ```
 
 After the VM is initially installed, run the NixOS setup:

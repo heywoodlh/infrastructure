@@ -11,10 +11,6 @@ variable "hostname" {
   type = string
 }
 
-variable "datastore_id" {
-  type = string
-}
-
 variable "memory" {
   type = number
   default = 4096
@@ -27,4 +23,9 @@ variable "cores" {
 
 variable "mac_address" {
   type = string
+}
+
+variable "datastore_id" {
+  type = string
+  default = "local"
 }

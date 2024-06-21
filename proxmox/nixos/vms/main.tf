@@ -8,8 +8,8 @@ resource "proxmox_virtual_environment_vm" "nixos_vm" {
   vm_id     = "${var.vm_id}"
 
   clone {
-    datastore_id = "local"
-    node_name    = "proxmox-nvidia"
+    datastore_id = "${var.datastore_id}"
+    node_name    = "proxmox-oryx-pro"
     vm_id        = 8003
   }
 

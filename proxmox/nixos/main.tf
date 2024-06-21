@@ -1,30 +1,13 @@
-resource "null_resource" "create_iso" {
-  provisioner "local-exec" {
-    command = "nix build -o /tmp/nixos-cloud-init.iso ../..#image.x86_64-linux"
-  }
-}
-
-output "iso_path" {
-  value = "/tmp/nixos-cloud-init.iso"
-}
-
-resource "proxmox_virtual_environment_vm" "nixos-cloud-init-template" {
-  name        = "nixos-cloud-init-template"
+resource "proxmox_virtual_environment_vm" "nixos_template" {
+  name        = "nixos-template"
   description = "Managed by Terraform"
   tags        = ["terraform", "nixos"]
 
-  node_name = "proxmox-nvidia"
+  node_name = "proxmox-oryx-pro"
   vm_id     = 8003
 
   agent {
     enabled = true
-  }
-
-  disk {
-    datastore_id = "local"
-    file_id      = "local:iso/nixos-cloud-init.iso"
-    interface    = "scsi0"
-    size         = 80
   }
 
   initialization {
@@ -33,11 +16,17 @@ resource "proxmox_virtual_environment_vm" "nixos-cloud-init-template" {
         address = "dhcp"
       }
     }
+  }
 
-    user_account {
-      keys     = [trimspace(data.http.vm_pubkey.response_body)]
-      username = "heywoodlh"
-    }
+  cdrom {
+    enabled = true
+    file_id = proxmox_virtual_environment_download_file.nixos_iso.id
+  }
+
+  disk {
+    datastore_id = "local"
+    interface    = "scsi0"
+    size         = 256
   }
 
   network_device {
@@ -65,24 +54,10 @@ resource "proxmox_virtual_environment_vm" "nixos-cloud-init-template" {
   template = true
 }
 
-data "http" "vm_pubkey" {
-  url = "https://github.com/heywoodlh.keys"
+resource "proxmox_virtual_environment_download_file" "nixos_iso" {
+  content_type       = "iso"
+  datastore_id       = "local"
+  file_name          = "nixos-24.05-gnome-x86_64.iso"
+  node_name          = "proxmox-oryx-pro"
+  url                = "https://channels.nixos.org/nixos-24.05/latest-nixos-gnome-x86_64-linux.iso"
 }
-
-resource "proxmox_virtual_environment_file" "nixos_cloudimg" {
-  content_type = "iso"
-  datastore_id = "local"
-  node_name    = "proxmox-nvidia"
-
-  source_file {
-    path = "/tmp/nixos-cloud-init.iso"
-  }
-}
-
-#resource "proxmox_virtual_environment_download_file" "ubuntu_noble_cloudimg" {
-#  content_type = "iso"
-#  datastore_id = "local"
-#  node_name    = "proxmox-nvidia"
-#  file_name = "noble-server-cloudimg-amd64.img"
-#  url = "https://cloud-images.ubuntu.com/noble/current/noble-server-cloudimg-amd64.img"
-#}
