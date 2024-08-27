@@ -1,0 +1,4 @@
+#!/usr/bin/env fish
+set -x curdir (dirname (status --current-filename))
+test -z "$VULTR_API_KEY" && export VULTR_API_KEY="$(op item get dr4b7omthk7nmwkzbe3nwkrhka --fields=api_key)"
+vultr-cli $argv

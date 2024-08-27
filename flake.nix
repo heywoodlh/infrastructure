@@ -32,6 +32,7 @@
           talosctl
           terraform
           tf
+          vultr-cli
         ];
       };
       formatter = pkgs.alejandra;

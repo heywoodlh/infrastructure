@@ -1,0 +1,3 @@
+#!/usr/bin/env fish
+set -x curdir (dirname (status --current-filename))
+op run --env-file="$curdir/../.env_vars" -- tofu $argv
