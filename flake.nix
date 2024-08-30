@@ -28,6 +28,7 @@
           _1password
           opentofu
           fish
+          flyctl
           p7zip
           talosctl
           terraform
