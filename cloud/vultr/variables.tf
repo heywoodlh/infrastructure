@@ -22,11 +22,6 @@ variable "firewall_group" {
   default = "8ddfa621-dd62-42ba-afea-6ce1ae762708"
 }
 
-variable "nix_store_size" {
-  type = number
-  default = 50 # At time of writing, 50GB of HDD is $1.25
-}
-
 variable "tailscale_api_key" {
   type        = string
   sensitive   = true
@@ -35,4 +30,14 @@ variable "tailscale_api_key" {
 variable "vultr_api_key" {
   type        = string
   sensitive   = true
+}
+
+variable "install_nix" {
+  type = bool
+  default = true
+}
+
+variable "nix_store_size" {
+  type = number
+  default = 50 # At time of writing, 50GB of HDD is $1.25
 }
