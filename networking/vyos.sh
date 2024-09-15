@@ -36,6 +36,8 @@ set interfaces ethernet eth3 description 'MANAGEMENT_ALT'
 
 #set default gateway
 set protocols static route 0.0.0.0/0 next-hop ${gateway_ip}
+#use internal router for LAN traffic
+set protocols static route 192.168.50.0/24 next-hop 10.0.50.2
 
 # SSH configuration
 set service ssh port 22
@@ -125,11 +127,11 @@ set service ssh disable-password-authentication
 delete system login user vyos
 
 ## Port forward Plex to router
-set nat destination rule 10 description 'Port Forward: Plex to 10.0.50.2'
+set nat destination rule 10 description 'Port Forward: Plex to 192.168.50.5'
 set nat destination rule 10 destination port '32400'
 set nat destination rule 10 inbound-interface name 'eth0'
 set nat destination rule 10 protocol 'tcp'
-set nat destination rule 10 translation address '10.0.50.2'
+set nat destination rule 10 translation address '192.168.50.5'
 
 ## Enable suricata
 #set service suricata interface 'eth0'
