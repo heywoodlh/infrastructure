@@ -127,11 +127,17 @@ set service ssh disable-password-authentication
 delete system login user vyos
 
 ## Port forward Plex to router
-set nat destination rule 10 description 'Port Forward: Plex to 192.168.50.5'
-set nat destination rule 10 destination port '32400'
+set nat destination rule 10 description 'Port Forward: Plex to 10.0.50.2'
 set nat destination rule 10 inbound-interface name 'eth0'
 set nat destination rule 10 protocol 'tcp'
-set nat destination rule 10 translation address '192.168.50.5'
+set nat destination rule 10 translation address '10.0.50.2'
+set nat destination rule 10 destination port '32400'
+# Allow Plex through firewall
+set firewall ipv4 forward filter rule 10 action accept
+set firewall ipv4 forward filter rule 10 destination address '10.0.50.2'
+set firewall ipv4 forward filter rule 10 destination port '32400'
+set firewall ipv4 forward filter rule 10 protocol tcp
+set firewall ipv4 forward filter rule 10 state new
 
 ## Enable suricata
 #set service suricata interface 'eth0'
