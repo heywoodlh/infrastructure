@@ -34,10 +34,12 @@ set interfaces ethernet eth1 description 'LAN'
 set interfaces ethernet eth3 address '192.168.50.3/24'
 set interfaces ethernet eth3 description 'MANAGEMENT_ALT'
 
-#set default gateway
+# Set default gateway
 set protocols static route 0.0.0.0/0 next-hop ${gateway_ip}
-#use internal router for LAN traffic
+# Use internal router for LAN traffic
 set protocols static route 192.168.50.0/24 next-hop 10.0.50.2
+# Route tailscale through router
+set protocols static route 100.64.0.0/10 next-hop 10.0.50.2
 
 # SSH configuration
 set service ssh port 22
@@ -142,6 +144,10 @@ set firewall ipv4 forward filter rule 10 state new
 ## Enable suricata
 #set service suricata interface 'eth0'
 #set service suricata interface 'eth1'
+
+## Logging
+set system syslog host 10.0.50.2 port 1514
+set system syslog host 10.0.50.2 facility local5 level all
 
 # Commit, and exit
 commit
