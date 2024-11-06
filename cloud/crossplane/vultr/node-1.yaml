@@ -1,0 +1,10 @@
+apiVersion: vultr.vultr.upbound.io/v1alpha1
+kind: Instance
+metadata:
+  name: crossplane-node-1
+spec:
+  forProvider:
+    osId: 2284 # Ubuntu 24.04
+    plan: vc2-1c-1gb # $5/month
+    region: lax
+    label: crossplane-node-1

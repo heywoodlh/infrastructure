@@ -1,0 +1,69 @@
+---
+apiVersion: pkg.crossplane.io/v1
+kind: Provider
+metadata:
+  name: provider-gcp-storage
+spec:
+  package: xpkg.upbound.io/upbound/provider-gcp-storage:v1.9.0
+---
+apiVersion: pkg.crossplane.io/v1
+kind: Provider
+metadata:
+  name: provider-vultr
+spec:
+ package: xpkg.upbound.io/crossplane-contrib/provider-vultr:v0.2.0
+---
+apiVersion: pkg.crossplane.io/v1
+kind: Provider
+metadata:
+  name: provider-ansible
+spec:
+  package: xpkg.upbound.io/crossplane-contrib/provider-ansible:v0.6.0
+---
+apiVersion: onepassword.com/v1
+kind: OnePasswordItem
+metadata:
+  finalizers:
+  - onepassword.com/finalizer.secret
+  generation: 1
+  name: gcp-creds
+  namespace: upbound-system
+spec:
+  itemPath: vaults/Kubernetes/items/synhfqshsybibxzfdwbxnpdv4q
+---
+apiVersion: onepassword.com/v1
+kind: OnePasswordItem
+metadata:
+  finalizers:
+  - onepassword.com/finalizer.secret
+  generation: 1
+  name: vultr-creds
+  namespace: upbound-system
+spec:
+  itemPath: vaults/Kubernetes/items/4on4qi5tghbhtljqfymhoznhpu
+---
+apiVersion: vultr.upbound.io/v1beta1
+kind: ProviderConfig
+metadata:
+  name: default
+spec:
+ credentials:
+   source: Secret
+   secretRef:
+     name: vultr-creds
+     namespace: upbound-system
+     key: credentials
+---
+apiVersion: gcp.upbound.io/v1beta1
+kind: ProviderConfig
+metadata:
+  name: gcp-crossplane-config
+  namespace: upbound-system
+spec:
+  projectID: homelab-440922
+  credentials:
+    source: Secret
+    secretRef:
+      name: gcp-creds
+      namespace: upbound-system
+      key: credentials
