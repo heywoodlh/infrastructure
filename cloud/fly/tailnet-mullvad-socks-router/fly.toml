@@ -1,0 +1,19 @@
+# fly.toml app configuration file generated for tailnet-mullvad-socks-router on 2024-11-06T12:00:23-07:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'tailnet-mullvad-socks-router'
+primary_region = 'den'
+
+[build]
+  image = 'docker.io/heywoodlh/tailscale-mullvad-router:1.76.1'
+
+[[mounts]]
+  source = 'tailscale'
+  destination = '/var/lib/tailscale'
+
+[[vm]]
+  memory = '1gb'
+  cpu_kind = 'shared'
+  cpus = 1
