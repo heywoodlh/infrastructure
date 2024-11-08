@@ -1,0 +1,14 @@
+apiVersion: vultr.vultr.upbound.io/v1alpha1
+kind: Instance
+metadata:
+  name: arch-node
+spec:
+  forProvider:
+    osId: 535
+    plan: vc2-1c-1gb # $5/month
+    region: lax
+    label: arch-node
+    sshKeyIds:
+      - 366c98b0-9012-47c7-90ca-fd98d189f160
+      - 49a81001-7388-4014-9674-7360948f1f8a
+    scriptId: 338a5d79-aa9d-4a2a-a284-d13338d60a30 # minimal-server
