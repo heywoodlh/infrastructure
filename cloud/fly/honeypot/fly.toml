@@ -1,0 +1,58 @@
+# fly.toml app configuration file generated for heywoodlh-honeypot on 2024-11-11T14:33:02-07:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'heywoodlh-honeypot'
+primary_region = 'sea'
+
+[build]
+
+[[mounts]]
+  source = 'honeypot_logs'
+  destination = '/logs'
+  initial_size = '1gb'
+  auto_extend_size_threshold = 80
+  auto_extend_size_increment = '1gb'
+  auto_extend_size_limit = '5gb'
+
+[http_service]
+  internal_port = 8000
+  force_https = true
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ['app']
+
+[[services]]
+  protocol = 'tcp'
+  internal_port = 21
+
+  [[services.ports]]
+    port = 21
+
+[[services]]
+  protocol = 'tcp'
+  internal_port = 2222
+
+  [[services.ports]]
+    port = 22
+
+[[services]]
+  protocol = 'tcp'
+  internal_port = 25
+
+  [[services.ports]]
+    port = 25
+
+[[services]]
+  protocol = 'tcp'
+  internal_port = 5900
+
+  [[services.ports]]
+    port = 5900
+
+[[vm]]
+  memory = '1gb'
+  cpu_kind = 'shared'
+  cpus = 1
