@@ -1,0 +1,27 @@
+# fly.toml app configuration file generated for reverse-shell on 2024-11-13T17:30:47-07:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'reverse-shell'
+primary_region = 'den'
+
+[build]
+  image = 'docker.io/heywoodlh/reverse-shell:server-alpine-3.20.3'
+
+[env]
+  LISTEN_PORT = '1337'
+
+[[services]]
+  protocol = 'tcp'
+  internal_port = 1337
+  auto_stop_machines = false
+  auto_start_machines = false
+
+  [[services.ports]]
+    port = 1337
+
+[[vm]]
+  memory = '1gb'
+  cpu_kind = 'shared'
+  cpus = 1
