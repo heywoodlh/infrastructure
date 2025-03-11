@@ -34,6 +34,10 @@ set interfaces ethernet eth1 description 'LAN'
 set interfaces ethernet eth3 address '192.168.50.3/24'
 set interfaces ethernet eth3 description 'MANAGEMENT_ALT'
 
+# Set DNS
+set system name-server 45.90.28.89
+set system name-server 45.90.30.89
+
 # Set default gateway
 set protocols static route 0.0.0.0/0 next-hop ${gateway_ip}
 # Use internal router for LAN traffic
