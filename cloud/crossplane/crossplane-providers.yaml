@@ -3,6 +3,7 @@ apiVersion: pkg.crossplane.io/v1
 kind: Provider
 metadata:
   name: provider-gcp-storage
+  namespace: upbound-system
 spec:
   package: xpkg.upbound.io/upbound/provider-gcp-storage:v1.9.0
 ---
@@ -10,6 +11,7 @@ apiVersion: pkg.crossplane.io/v1
 kind: Provider
 metadata:
   name: provider-vultr
+  namespace: upbound-system
 spec:
  package: xpkg.upbound.io/crossplane-contrib/provider-vultr:v0.2.0
 ---
@@ -17,6 +19,7 @@ apiVersion: pkg.crossplane.io/v1
 kind: Provider
 metadata:
   name: provider-ansible
+  namespace: upbound-system
 spec:
   package: xpkg.upbound.io/crossplane-contrib/provider-ansible:v0.6.0
 ---
@@ -46,6 +49,7 @@ apiVersion: vultr.upbound.io/v1beta1
 kind: ProviderConfig
 metadata:
   name: default
+  namespace: upbound-system
 spec:
  credentials:
    source: Secret
