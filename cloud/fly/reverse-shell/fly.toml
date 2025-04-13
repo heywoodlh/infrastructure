@@ -7,7 +7,7 @@ app = 'reverse-shell'
 primary_region = 'den'
 
 [build]
-  image = 'docker.io/heywoodlh/reverse-shell:server-alpine-3.20.3'
+  image = 'docker.io/heywoodlh/reverse-shell:server-alpine-3.21.3'
 
 [env]
   LISTEN_PORT = '1337'
