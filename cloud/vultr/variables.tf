@@ -37,7 +37,27 @@ variable "install_nix" {
   default = true
 }
 
+variable "nix_store_type" {
+  type = string
+  default = "storage_opt" # HDD
+}
+
 variable "nix_store_size" {
   type = number
   default = 50 # At time of writing, 50GB of HDD is $1.25
+}
+
+variable "home_dir_type" {
+  type = string
+  default = "storage_opt" # HDD
+}
+
+variable "home_dir_size" {
+  type = number
+  default = 50 # At time of writing, 50GB of HDD is $1.25
+}
+
+variable "setup_args" {
+  type = string
+  default = "server --ansible" # args for the setup script
 }

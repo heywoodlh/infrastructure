@@ -1,8 +1,9 @@
-hostname       = "arch-dev"
+hostname       = "cloud"
 plan           = "vc2-1c-2gb" # $10/month, `vultr plans list`
-os             = "535" # Arch Linux
 install_nix    = true
+os             = "535" # Arch
 nix_store_type = "storage_opt" # options are `high_perf` (SSD) or `storage_opt` (HDD)
-nix_store_size = 200 # ~$5.00/month HDD
+nix_store_size = 100 # ~$2.50/month HDD
 home_dir_type  = "storage_opt" # options are `high_perf` (SSD) or `storage_opt` (HDD)
 home_dir_size  = 100 # ~$2.50/month HDD
+setup_args     = "server --ansible --home-manager"

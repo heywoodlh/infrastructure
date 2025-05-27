@@ -7,3 +7,7 @@ tf init
 tf plan -var-file=./vars/ubuntu-dev.tfvars
 tf apply -var-file=./vars/ubuntu-dev.tfvars
 ```
+
+## Note to self
+
+Credentials are handled in `.env_vars` and the <./bin/tf> wrapper

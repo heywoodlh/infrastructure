@@ -1,8 +1,12 @@
 terraform {
+  backend "kubernetes" {
+    secret_suffix    = "github-heywoodlh-infrastructure-cloud-vultr"
+    config_path      = "~/.kube/config"
+  }
   required_providers {
     vultr = {
       source  = "vultr/vultr"
-      version = "2.21.0"
+      version = "2.26.0"
     }
     tailscale = {
       source  = "tailscale/tailscale"
