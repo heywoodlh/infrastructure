@@ -6,4 +6,4 @@ nix_store_type = "storage_opt" # options are `high_perf` (SSD) or `storage_opt` 
 nix_store_size = 100 # ~$2.50/month HDD
 home_dir_type  = "storage_opt" # options are `high_perf` (SSD) or `storage_opt` (HDD)
 home_dir_size  = 100 # ~$2.50/month HDD
-setup_args     = "server --ansible --home-manager"
+setup_args     = "workstation --ansible --home-manager"
