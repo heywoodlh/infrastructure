@@ -6,4 +6,4 @@ nix_store_type      = "storage_opt" # options are `high_perf` (SSD) or `storage_
 nix_store_size      = 100 # ~$2.50/month HDD
 home_dir_type       = "storage_opt" # options are `high_perf` (SSD) or `storage_opt` (HDD)
 home_dir_size       = 100 # ~$2.50/month HDD
-home_manager_target = "github:heywoodlh/nixos-configs#homeConfigurations.heywoodlh.activationPackage"
+home_manager_target = "github:heywoodlh/nixos-configs#homeConfigurations.heywoodlh-server.activationPackage"

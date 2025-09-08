@@ -1,8 +1,0 @@
-hostname       = "arch-dev"
-plan           = "vc2-1c-2gb" # $10/month, `vultr plans list`
-os             = "535" # Arch Linux
-install_nix    = true
-nix_store_type = "storage_opt" # options are `high_perf` (SSD) or `storage_opt` (HDD)
-nix_store_size = 200 # ~$5.00/month HDD
-home_dir_type  = "storage_opt" # options are `high_perf` (SSD) or `storage_opt` (HDD)
-home_dir_size  = 100 # ~$2.50/month HDD

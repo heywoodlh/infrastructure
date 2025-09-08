@@ -1,3 +1,4 @@
 #!/usr/bin/env fish
 set -x curdir (dirname (status --current-filename))
-op run --env-file="$curdir/../.env_vars" -- tofu $argv
+export OP_SERVICE_ACCOUNT_TOKEN=$(op-wrapper.sh read "op://Automation/pim3lush6qv3nnx3eptffk4ypi/password")
+op-wrapper.sh run --env-file="$curdir/../.env_vars" -- tofu $argv

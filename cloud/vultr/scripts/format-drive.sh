@@ -23,6 +23,7 @@ else
   echo "Formatting filesystem: ${disk_real_path}1 => ext4"
   parted -s "${disk_real_path}" mklabel gpt
   parted -s "${disk_real_path}" unit mib mkpart primary 0% 100%
+  sleep 5 # encountered "The file /dev/sda1 does not exist and no size was specified" error without this
   mkfs.ext4 "${disk_real_path}1" || { echo "Failed to format disk. Exiting."; exit 1; }
 fi
 

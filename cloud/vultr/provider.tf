@@ -30,7 +30,3 @@ provider "tailscale" {
   api_key = var.tailscale_api_key
   tailnet = "heywoodlh.github"
 }
-
-provider "onepassword" {
-  account = "ZBM4RJDFRBFMBIELF3I6KKZ5MY"
-}

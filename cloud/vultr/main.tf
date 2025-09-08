@@ -19,7 +19,8 @@ resource "vultr_instance" "my_instance" {
   activation_email = false
   ssh_key_ids      = [
     "366c98b0-9012-47c7-90ca-fd98d189f160",
-    "49a81001-7388-4014-9674-7360948f1f8a"
+    "49a81001-7388-4014-9674-7360948f1f8a",
+    "fbb5bcd4-286b-4f6c-a83a-6421ec5478c1", # terraform-cli
   ]
   firewall_group_id = "8ddfa621-dd62-42ba-afea-6ce1ae762708" # ssh-from-trusted-only
 }
@@ -83,8 +84,8 @@ resource "vultr_block_storage" "nix_store" {
 }
 
 data "onepassword_item" "ssh_key" {
-  vault = "Personal"
-  uuid = "rlt3q545cf5a4r4arhnb4h5qmi"
+  vault = "Automation"
+  uuid  = "zgrri6zlhpwzfn6szzvdphiswi"
 }
 
 resource "null_resource" "home_setup" {
@@ -128,10 +129,14 @@ resource "null_resource" "init_provision" {
     private_key = "${data.onepassword_item.ssh_key.private_key}"
   }
 
+  provisioner "file" {
+    source      = "./scripts/copy-ssh-keys.sh"
+    destination = "/tmp/copy-ssh-keys.sh"
+  }
+
   provisioner "remote-exec" {
     inline = [
-      "pacman -Sy --noconfirm tailscale || curl -fsSL https://tailscale.com/install.sh | sh",
-      "systemctl enable --now tailscaled.service",
+      "curl -fsSL https://tailscale.com/install.sh | sh",
       "tailscale up --authkey ${tailscale_tailnet_key.my_instance_key.key}",
       "userdel --remove ubuntu &>/dev/null || true",
       "userdel --remove linuxuser &>/dev/null || true",
@@ -146,11 +151,12 @@ resource "null_resource" "init_provision" {
       "chmod 700 /home/heywoodlh/.ssh; chmod 600 /home/heywoodlh/.ssh/authorized_keys",
       "sed -i 's/UsePAM yes/UsePAM no/' /etc/ssh/sshd_config", # PAM severely slows down SSH on Vultr for some reason
       "systemctl restart sshd.service &>/dev/null || systemctl restart ssh.service &>/dev/null || true",
+      "bash /tmp/copy-ssh-keys.sh",
     ]
   }
 }
 
-resource "null_resource" "nix_install" {
+resource "null_resource" "nix_store" {
   count = var.install_nix == true ? 1 : 0
 
   depends_on = [
@@ -174,7 +180,33 @@ resource "null_resource" "nix_install" {
 
   provisioner "remote-exec" {
     inline = [
-      "bash /tmp/format-drive.sh ${vultr_block_storage.nix_store[0].mount_id} /nix | tee -a /var/log/format-nix.log && sudo -H -u heywoodlh bash -c 'curl -L https://files.heywoodlh.io/scripts/linux.sh | bash -s -- ${var.setup_args} | tee -a /tmp/setup.log'"
+      "bash /tmp/format-drive.sh ${vultr_block_storage.nix_store[0].mount_id} /nix | tee -a /var/log/format-nix.log"
+    ]
+  }
+}
+
+resource "null_resource" "nix_install" {
+  count = var.install_nix == true ? 1 : 0
+
+  depends_on = [
+    vultr_block_storage.nix_store,
+    vultr_instance.my_instance,
+    null_resource.init_provision,
+    null_resource.nix_store,
+  ]
+
+  connection {
+    type        = "ssh"
+    user        = "heywoodlh"
+    agent       = false
+    host        = vultr_instance.my_instance.main_ip
+    private_key = "${data.onepassword_item.ssh_key.private_key}"
+  }
+
+  provisioner "remote-exec" {
+    inline = [
+      "curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install --no-confirm --determinate",
+      "/nix/var/nix/profiles/default/bin/nix --extra-experimental-features 'nix-command flakes' run ${var.home_manager_target} --impure | tee -a /tmp/setup.log"
     ]
   }
 }
@@ -195,17 +227,12 @@ resource "null_resource" "ansible_standalone_install" {
     private_key = "${data.onepassword_item.ssh_key.private_key}"
   }
 
-  provisioner "file" {
-    source      = "./scripts/install-ansible.sh"
-    destination = "/tmp/install-ansible.sh"
-  }
-
   provisioner "remote-exec" {
     inline = [
-      "bash /tmp/install-ansible.sh",
+      "curl --silent -L https://raw.githubusercontent.com/heywoodlh/flakes/refs/heads/main/ansible/server/files/scripts/install-ansible.sh | bash",
       "curl --silent -L https://raw.githubusercontent.com/heywoodlh/flakes/main/ansible/requirements.yml -o /tmp/requirements.yml",
-      "ansible-galaxy install -r /tmp/requirements.yml",
-      "ansible-pull -U https://github.com/heywoodlh/flakes ansible/server/standalone.yml",
+      "/root/.local/bin/ansible-galaxy install -r /tmp/requirements.yml",
+      "/root/.local/bin/ansible-pull -U https://github.com/heywoodlh/flakes ansible/server/standalone.yml -e ansible_python_interpreter=/usr/bin/python3",
     ]
   }
 }

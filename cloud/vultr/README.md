@@ -4,8 +4,8 @@ This directory contains Terraform configuration for general-purpose Linux VMs.
 
 ```
 tf init
-tf plan -var-file=./vars/ubuntu-dev.tfvars
-tf apply -var-file=./vars/ubuntu-dev.tfvars
+tf plan -var-file=./vars/ubuntu.tfvars
+tf apply -var-file=./vars/ubuntu.tfvars
 ```
 
 ## Note to self

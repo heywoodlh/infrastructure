@@ -1,7 +1,0 @@
-hostname       = "ubuntu-dev"
-plan           = "vc2-1c-2gb" # $10/month, `vultr plans list`
-install_nix    = true
-nix_store_type = "storage_opt" # options are `high_perf` (SSD) or `storage_opt` (HDD)
-nix_store_size = 100 # ~$2.50/month HDD
-home_dir_type  = "storage_opt" # options are `high_perf` (SSD) or `storage_opt` (HDD)
-home_dir_size  = 100 # ~$2.50/month HDD

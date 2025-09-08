@@ -57,7 +57,7 @@ variable "home_dir_size" {
   default = 50 # At time of writing, 50GB of HDD is $1.25
 }
 
-variable "setup_args" {
+variable "home_manager_target" {
   type = string
   default = "server --ansible" # args for the setup script
 }
