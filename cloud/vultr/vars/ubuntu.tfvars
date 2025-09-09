@@ -1,9 +1,9 @@
-hostname            = "cloud"
+hostname            = "ubuntu"
 plan                = "vc2-1c-2gb" # $10/month, `vultr plans list`
 install_nix         = true
 os                  = "2284" # Ubuntu 24.04
 nix_store_type      = "storage_opt" # options are `high_perf` (SSD) or `storage_opt` (HDD)
-nix_store_size      = 100 # ~$2.50/month HDD
+nix_store_size      = 100 # ~$2.50 HDD, ~$10.00/month SSD
 home_dir_type       = "storage_opt" # options are `high_perf` (SSD) or `storage_opt` (HDD)
-home_dir_size       = 100 # ~$2.50/month HDD
+home_dir_size       = 100 # ~$2.50 HDD, ~$10.00/month SSD
 home_manager_target = "github:heywoodlh/nixos-configs#homeConfigurations.heywoodlh-server.activationPackage"
