@@ -1,13 +1,13 @@
-# fly.toml app configuration file generated for reverse-shell on 2024-11-13T17:30:47-07:00
+# fly.toml app configuration file generated for reverse-shell on 2025-10-16T15:22:54-06:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
 app = 'reverse-shell'
-primary_region = 'den'
+primary_region = 'lax'
 
 [build]
-  image = 'docker.io/heywoodlh/reverse-shell:server-alpine-3.21.3'
+  dockerfile = 'Dockerfile'
 
 [env]
   LISTEN_PORT = '1337'
@@ -20,6 +20,16 @@ primary_region = 'den'
 
   [[services.ports]]
     port = 1337
+
+  [services.concurrency]
+    type = 'connections'
+    hard_limit = 10
+    soft_limit = 5
+
+  [[services.tcp_checks]]
+    interval = '15s'
+    timeout = '2s'
+    grace_period = '1s'
 
 [[vm]]
   memory = '1gb'

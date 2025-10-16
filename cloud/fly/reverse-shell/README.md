@@ -5,8 +5,6 @@ fly deploy
 
 If updating, just run `fly deploy`.
 
-On the prompt to tweak settings, press "yes", set port to 0.
-
 # Initiate reverse shell:
 
 ```
