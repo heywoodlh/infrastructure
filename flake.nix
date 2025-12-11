@@ -24,6 +24,10 @@
       terraform = pkgs.writeShellScriptBin "terraform" ''
         ${pkgs.opentofu}/bin/tofu $@
       '';
+      hcloud-wrapper = pkgs.writeShellScriptBin "hcloud" ''
+        test -z "$HCLOUD_TOKEN" && export HCLOUD_TOKEN="$(${op-wrapper}/bin/op-wrapper item get azutrtibatixkvxl662nqrkyj4 --reveal --fields=password)"
+        ${pkgs.hcloud}/bin/hcloud $@
+      '';
     in {
       devShell = pkgs.mkShell {
         name = "infrastructure";
@@ -32,8 +36,8 @@
           opentofu
           fish
           flyctl
+          hcloud-wrapper
           p7zip
-          talosctl
           terraform
           tf
           vultr-cli
