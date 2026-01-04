@@ -40,6 +40,7 @@
           p7zip
           terraform
           tf
+          terraform-ls
           vultr-cli
         ];
       };
