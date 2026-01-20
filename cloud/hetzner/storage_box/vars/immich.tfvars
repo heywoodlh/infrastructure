@@ -1,4 +1,4 @@
-name   = "backup"
+name   = "immich-backup"
 region = "hel1"
 plan   = "bx21"
 ssh_keys = [
