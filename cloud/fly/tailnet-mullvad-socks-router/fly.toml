@@ -1,4 +1,4 @@
-# fly.toml app configuration file generated for tailnet-mullvad-socks-router on 2026-01-03T01:17:57-07:00
+# fly.toml app configuration file generated for tailnet-mullvad-socks-router on 2026-03-02T18:28:28-07:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
@@ -7,7 +7,7 @@ app = 'tailnet-mullvad-socks-router'
 primary_region = 'lax'
 
 [build]
-  image = 'docker.io/heywoodlh/tailscale-mullvad-router:1.76.1'
+  image = 'docker.io/heywoodlh/tailscale-mullvad-router:1.94.2'
 
 [[mounts]]
   source = 'tailscale'
