@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 set -e
-onepassword_item="ohelo3flfw26d3ddenrssvdxqq"
-WIREGUARD_ENDPOINT=$(op read "op://Automation/$onepassword_item/WIREGUARD_ENDPOINT")
-WIREGUARD_ENDPOINT_PUBKEY=$(op read "op://Automation/$onepassword_item/WIREGUARD_ENDPOINT_PUBKEY")
-WIREGUARD_PRIVKEY=$(op read "op://Automation/$onepassword_item/WIREGUARD_PRIVKEY")
-WIREGUARD_ADDRESS=$(op read "op://Automation/$onepassword_item/WIREGUARD_ADDRESS")
-TS_AUTHKEY=$(op read "op://Automation/$onepassword_item/TS_AUTHKEY")
+onepassword_item="op://Kubernetes/sn7xoztdhwtsvaxhztrygn5s3i"
+WIREGUARD_ENDPOINT=$(op read "$onepassword_item/WIREGUARD_ENDPOINT")
+WIREGUARD_ENDPOINT_PUBKEY=$(op read "$onepassword_item/WIREGUARD_ENDPOINT_PUBKEY")
+WIREGUARD_PRIVKEY=$(op read "$onepassword_item/WIREGUARD_PRIVKEY")
+WIREGUARD_ADDRESS=$(op read "$onepassword_item/WIREGUARD_ADDRESS")
+TS_AUTHKEY=$(op read "$onepassword_item/TS_AUTHKEY")
 
 #echo "WIREGUARD_ENDPOINT: ${WIREGUARD_ENDPOINT}"
 #echo "WIREGUARD_ENDPOINT_PUBKEY: ${WIREGUARD_ENDPOINT_PUBKEY}"
