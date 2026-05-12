@@ -1,23 +1,20 @@
 {
   description = "infrastructure";
 
-  inputs.nixpkgs.url = "github:NixOS/nixpkgs";
-  inputs.flake-utils.url = "github:numtide/flake-utils";
-  inputs.fish-flake.url = "github:heywoodlh/nixos-configs?dir=flakes/fish";
+  inputs.nixos-configs.url = "git+https://tangled.org/heywoodlh.io/nixos-configs";
 
-  outputs = inputs @ {
+  outputs = {
     self,
-    nixpkgs,
-    flake-utils,
-    fish-flake,
+    nixos-configs,
   }:
-    flake-utils.lib.eachDefaultSystem (system: let
-      #pkgs = nixpkgs.legacyPackages.${system};
+    nixos-configs.inputs.flake-utils.lib.eachDefaultSystem (system: let
+      nixpkgs = nixos-configs.inputs.nixpkgs;
       pkgs = import nixpkgs {
         inherit system;
         config.allowUnfree = true;
       };
-      op-wrapper = fish-flake.packages.${system}.op-wrapper;
+      tangled-sync = nixos-configs.packages.${system}.tangled-sync;
+      op-wrapper = nixos-configs.packages.${system}.op-wrapper;
       tf = pkgs.writeShellScriptBin "tf" ''
         ${pkgs.opentofu}/bin/tofu $@
       '';
@@ -43,6 +40,9 @@
           terraform-ls
           vultr-cli
         ];
+        shellHook = ''
+          ${tangled-sync}/bin/tangled-sync.sh
+        '';
       };
       formatter = pkgs.alejandra;
     });
