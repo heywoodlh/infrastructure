@@ -19,6 +19,6 @@ steps:
   - name: build spindle image
     command: |
       # Build `version` target for deriving rev of spindle
-      docker build -t docker.io/heywoodlh/spindle:version --target=version -f cloud/fly/tangled/spindle/Dockerfile cloud/fly/tangled/spindle
-      docker build --push -t docker.io/heywoodlh/spindle:latest -t docker.io/heywoodlh/spindle:$(docker run -i --rm docker.io/heywoodlh/spindle:version) -f cloud/fly/tangled/spindle/Dockerfile cloud/fly/tangled/spindle
+      docker build --build-arg TANGLED_REPO="heywoodlh.io/core" --build-arg TANGLED_REV="spindle-run" -t docker.io/heywoodlh/spindle:version --target=version -f cloud/fly/tangled/spindle/Dockerfile cloud/fly/tangled/spindle
+      docker build --build-arg TANGLED_REPO="heywoodlh.io/core" --build-arg TANGLED_REV="spindle-run" --push -t docker.io/heywoodlh/spindle:latest -t docker.io/heywoodlh/spindle:$(docker run -i --rm docker.io/heywoodlh/spindle:version) -f cloud/fly/tangled/spindle/Dockerfile cloud/fly/tangled/spindle
 

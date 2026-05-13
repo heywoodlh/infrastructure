@@ -5,8 +5,12 @@ ARG GO_VERSION="1.26"
 
 FROM docker.io/golang:${GO_VERSION}-${DEBIAN_VERSION} AS builder
 
+# Allow overridding repo and rev
+ARG TANGLED_REPO="tangled.org/core"
+ARG TANGLED_REV="master"
+
 RUN apt update && apt install -y git \
-    && git clone https://tangled.org/tangled.org/core /opt/tangled \
+    && git clone -b "${TANGLED_REV}" https://tangled.org/${TANGLED_REPO} /opt/tangled \
     && git -C /opt/tangled rev-parse --short HEAD > /VERSION.txt \
     && cd /opt/tangled \
     && go mod download \

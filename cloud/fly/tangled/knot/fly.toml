@@ -1,0 +1,40 @@
+# fly.toml app configuration file generated for spindle-heywoodlh on 2026-05-12T16:38:15-06:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'knot-heywoodlh'
+primary_region = 'sjc'
+
+[build]
+  image = "atcr.io/tangled.org/knot:latest"
+
+[env]
+  KNOT_SERVER_HOSTNAME = "knot.heywoodlh.io"
+  KNOT_SERVER_OWNER = "did:plc:ycnss4fntzi3rjuueb7loq3x"
+  KNOT_SERVER_DB_PATH = "/data/knotserver.db"
+  KNOT_REPO_SCAN_PATH = "/data/repositories"
+  KNOT_SERVER_INTERNAL_LISTEN_ADDR = "0.0.0.0:5444"
+
+[[mounts]]
+  source = 'data'
+  destination = '/data'
+
+[[services]]
+  protocol = 'tcp'
+  internal_port = 5444
+
+  [[services.ports]]
+    port = 5444
+
+[[services]]
+  protocol = 'tcp'
+  internal_port = 2222
+
+  [[services.ports]]
+    port = 22
+
+[[vm]]
+  memory = '1gb'
+  cpus = 1
+  memory_mb = 1024

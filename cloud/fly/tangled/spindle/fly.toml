@@ -9,6 +9,10 @@ primary_region = 'sjc'
 [build]
   build-target = "root"
 
+[build.args]
+  TANGLED_REPO="heywoodlh.io/core"
+  TANGLED_REV="spindle-run"
+
 [env]
   SPINDLE_SERVER_DEV = 'false'
   SPINDLE_SERVER_HOSTNAME = 'spindle.heywoodlh.io'

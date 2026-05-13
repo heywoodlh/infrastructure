@@ -1,14 +1,10 @@
-Community image of [Spindle](https://docs.tangled.org/spindles), [tangled.org](https://tangled.org)'s CI runner.
+Community image of [Spindle](), CI runner on [tangled.org](https://tangled.org) 
 
 Features:
 - Unprivileged user
 - Docker in Docker configuration
 
 Dockerfile: https://tangled.org/heywoodlh.io/infrastructure/blob/main/cloud/fly/tangled/spindle/Dockerfile
-
-Pipeline definition to build and push the image: https://tangled.org/heywoodlh.io/infrastructure/blob/main/.tangled/workflows/spindle.yml
-
-Docker Hub image: [heywoodlh/spindle](https://hub.docker.com/r/heywoodlh/spindle)
 
 ## Docker-Compose
 
