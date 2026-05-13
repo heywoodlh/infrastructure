@@ -1,0 +1,24 @@
+when:
+  - event: ["push", "manual"]
+    branch: ["main"]
+
+engine: "nixery"
+
+dependencies:
+  nixpkgs:
+    - docker-client
+
+volumes:
+  /var/run/docker.sock: /var/run/docker.sock
+
+steps:
+  - name: login to docker hub
+    command: |
+      echo $DOCKER_TOKEN | docker login -u heywoodlh --password-stdin
+
+  - name: build spindle image
+    command: |
+      # Build `version` target for deriving rev of spindle
+      docker build -t docker.io/heywoodlh/spindle:version --target=version -f cloud/fly/tangled/spindle/Dockerfile cloud/fly/tangled/spindle
+      docker build --push -t docker.io/heywoodlh/spindle:latest -t docker.io/heywoodlh/spindle:$(docker run -i --rm docker.io/heywoodlh/spindle:version) -f cloud/fly/tangled/spindle/Dockerfile cloud/fly/tangled/spindle
+
