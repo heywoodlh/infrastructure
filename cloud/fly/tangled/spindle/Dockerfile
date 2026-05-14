@@ -60,6 +60,7 @@ ENV SPINDLE_SERVER_DEV=true
 
 COPY supervisord.conf /etc/supervisor/supervisord.conf
 COPY --chmod=777 dockerd.sh /dockerd.sh
+COPY --chmod=777 spindle.sh /spindle.sh
 
 ENTRYPOINT ["supervisord", "-c", "/etc/supervisor/supervisord.conf"]
 
