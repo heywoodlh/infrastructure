@@ -1,4 +1,0 @@
-{
-  "hosts": ["unix:///var/run/docker.sock"],
-  "dns": ["1.1.1.1", "1.0.0.1"]
-}
