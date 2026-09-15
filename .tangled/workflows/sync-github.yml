@@ -1,0 +1,26 @@
+---
+# Mirror the canonical Tangled main branch to GitHub without rewriting history.
+when:
+  - event: ["push"]
+    branch: ["main"]
+
+engine: "nixery"
+
+clone:
+  depth: 1
+
+dependencies:
+  nixpkgs:
+    - git
+
+steps:
+  - name: Push main to GitHub
+    command: |
+      set -eu
+      askpass="$(mktemp)"
+      trap 'rm -f "$askpass"' EXIT
+      printf '%s\n' '#!/bin/sh' 'printf "%s\n" "$GITHUB_TOKEN"' > "$askpass"
+      chmod 700 "$askpass"
+      github_remote="https://x-access-token@github.com/heywoodlh/infrastructure.git"
+      GIT_ASKPASS="$askpass" GIT_TERMINAL_PROMPT=0 \
+        git push "$github_remote" HEAD:refs/heads/main
