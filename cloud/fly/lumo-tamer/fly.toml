@@ -1,0 +1,27 @@
+# fly.toml app configuration file for heywoodlh-lumo-tamer
+#
+# Tailscale-only service: no [[services]]/[[http_service]] block, so nothing is
+# exposed through Fly's proxy. Reach it at http://lumo.barn-banana.ts.net:3003
+# from inside the tailnet.
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to
+# use this file.
+
+app = 'heywoodlh-lumo-tamer'
+primary_region = 'lax'
+
+[build]
+  dockerfile = 'Dockerfile'
+
+[env]
+  NODE_ENV = 'production'
+
+[[mounts]]
+  source = 'data'
+  destination = '/app/data'
+  initial_size = '1gb'
+
+[[vm]]
+  memory = '1gb'
+  cpu_kind = 'shared'
+  cpus = 1
